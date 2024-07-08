@@ -8,6 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
 
+import random
+
 class InstagramBot:
     def __init__(self, username:str, password:str):
         self.username = username
@@ -56,7 +58,6 @@ class InstagramBot:
         driver = self.driver
         
         try:
-            # XPath corrigido para buscar o botão com as classes especificadas
             button_list = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.XPATH, "//button[contains(@class, '_acan') and contains(@class, '_acap') and contains(@class, '_acas') and contains(@class, '_aj1-') and contains(@class, '_ap30')]"))
             )
@@ -66,11 +67,19 @@ class InstagramBot:
 
             while teste < 10:
                 for element in button_list:
-                    driver.execute_script('arguments[0].click();', element)
-                    seguidor += 1
-                    print(seguidor)
-                    sleep(7)
+                    try:
+                        driver.execute_script('arguments[0].click();', element)
+                        # Aguarda um tempo aleatório entre 5 e 10 segundos
+                        sleep(random.uniform(5, 10))
+                        seguidor += 1
+                        print(f"Seguidor número: {seguidor}")
+                    except Exception as e:
+                        print(f"Não foi possível seguir a pessoa: {e}")
                 teste += 1
+                # Atualiza a lista de botões após cada iteração
+                button_list = WebDriverWait(driver, 10).until(
+                    EC.presence_of_all_elements_located((By.XPATH, "//button[contains(@class, '_acan') and contains(@class, '_acap') and contains(@class, '_acas') and contains(@class, '_aj1-') and contains(@class, '_ap30')]"))
+                )
         except Exception as e:
             print(f"An error occurred: {e}")
         
