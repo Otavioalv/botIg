@@ -48,7 +48,8 @@ class InstagramBot:
             button = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/amazon/followers/')]"))
             )
-            driver.execute_script('arguments[0].click();', button)
+            # driver.execute_script('arguments[0].click();', button)
+            button.click();
             sleep(5)
         except Exception as e:
             print(f"An error occurred: {e}")
@@ -93,4 +94,4 @@ Bot.follow_all()
         
         
         
-        
+    
